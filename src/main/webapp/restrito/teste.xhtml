@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:util="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="form">
+		<p:commandButton value=" testar" process="@this" action="#{teste.tt}"/> <br/>
+<util:tablePessoa  width="945px" height="474px" larguraDescricao="360" visivel="true" lista="#{testeBean.lista}"
+nomeRodape="Tabela pessoas" nomeCabecalho="Tabela Pessoas"/>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

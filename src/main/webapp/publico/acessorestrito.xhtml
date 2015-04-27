@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+
+	
+	<title><ui:insert name="titulo">Financeiro Web</ui:insert></title>
+	
+	<h:outputStylesheet library="fonts" name="open_sans.css"/> 
+	<h:outputStylesheet library="fonts" name="roboto.css"/>
+	
+	<h:outputStylesheet library="css" name="bootstrap.min.css"/>
+	
+	<h:outputStylesheet library="css" name="login.css"/>
+	
+	<style>
+		.center {text-align: center; margin-left: auto; margin-right: auto; margin-bottom: auto; margin-top: auto; }
+	</style>
+</h:head>
+<h:body>
+	<h:form id="formulario" class="form-horizontal">
+		<center>
+			<div class="page-header">
+				<h1>
+					<small>Renovar Sistemas</small>
+				</h1>
+			</div>
+		</center>
+		<p:messages id="cadMenssagem" display="text" autoUpdate="true"
+			closable="true" errorClass="bs-callout bs-callout-info" />
+
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-xs-1"></div>
+				<div class="col-xs-10 box">
+
+					<div class="hero-unit center">
+						<h1>Oops! Ocorreu um problema...</h1>
+
+						<br />
+
+						<h:graphicImage library="imagens2" name="error_icon.png" />
+
+						<!-- <h1><small><font face="Tahoma" color="red">Erro 500</font></small></h1> -->
+
+						<br /> <br /> <br />
+
+						<p>Caro(a) #{contextoBean.funcionarioLogado.pesId} você não acesso à essa parte do sistema, por favor entre em contato com o responsável do setor para orientação.</p>
+
+						<br /> <a href="#{request.contextPath}/restrito/principal.jsf"
+							class="btn btn-large btn-info"><i
+							class="icon-home icon-white"></i> Me leve ao início</a>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</h:form>
+</h:body>
+</html>

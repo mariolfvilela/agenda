@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<!-- <ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		
+		<h1>Login</h1>
+		<hr />
+	
+		<h:panelGroup rendered="#{!empty param.login_error}">
+			<span style="font-color: red"> Erro ao efetuar o login.</span>
+			<br />
+			<br />
+			Motivo: #{SPRING_SECURITY_LAST_EXCEPTION.message}
+		</h:panelGroup>
+
+		<form id="login" method="post"
+			action="#{request.contextPath}/j_spring_security_check">
+			<table>
+				<tr>
+					<td>Login</td>
+					<td><input type='text' name='j_username' /></td>
+				</tr>
+				<tr>
+					<td>Senha</td>
+					<td><input type='password' name='j_password' /></td>
+				</tr>
+				<tr>
+					<td align="right"><input type="checkbox"
+						name="_spring_security_remember_me" /></td>
+					<td>Entrar automaticamente</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><input type="submit" value="Entrar" /></td>
+				</tr>
+			</table>
+			<script>
+			document.getElementById("login").j_username.value = "#{SPRING_SECURITY_LAST_USERNAME}";
+		</script>
+		</form>
+	</ui:define>
+</ui:composition> -->
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<title><ui:insert name="titulo">Financeiro Web</ui:insert></title>
+	
+	<h:outputStylesheet library="fonts" name="open_sans.css"/> 
+	<h:outputStylesheet library="fonts" name="roboto.css"/>
+	
+	<h:outputStylesheet library="css" name="bootstrap.min.css"/>
+	
+	<h:outputStylesheet library="css" name="login.css"/>
+	
+</h:head>
+<h:body>
+	
+	
+	
+	<div class="container container900">
+
+		<div class="row">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-6 logobox">
+				<h:graphicImage library="imagens2" name="renovar_logo.png"/>
+			</div>
+			<div class="col-xs-3"></div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-6 box">
+
+				<div class="titleBox">
+					<a>Autenticação de Usuários</a>
+					<hr/>
+				</div>
+				
+				<form id="login" method="post" action="#{request.contextPath}/j_spring_security_check">
+
+					<div class="form-group">
+						<input type='text' id="usuario" class="form-control" placeholder="Entre com seu Usuário" name='j_username' />
+					</div>
+
+					<div class="form-group">						
+						<input type='password' id="senha" class="form-control" placeholder="Entre com sua Senha" name='j_password' />
+					</div>
+					
+					<input type="checkbox" name="_spring_security_remember_me" />
+						
+					<a>Entrar automaticamente</a>
+										
+					<center>
+						<button id="btLogar" type="submit" class="btn btn-primary">Entrar no Sistema</button>
+					</center>
+					
+					<h:panelGroup rendered="#{!empty param.login_error}">
+						<br/>
+						<div class="alert alert-danger">
+							Erro ao efetuar o login!
+							<br />
+							Motivo: #{SPRING_SECURITY_LAST_EXCEPTION.message}
+						</div>
+					</h:panelGroup>
+			 
+				</form>
+	
+		
+		</div>
+		
+		<div class="col-xs-3"></div>
+		
+		</div>
+
+		<div class="row">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-6 bottom">
+				<p>Renovar Sistemas - 2015</p>
+			</div>
+			<div class="col-xs-"></div>
+		</div>
+	</div>
+	
+	
+	<h:outputScript library="js" name="bootstrap.min.js" />
+	
+</h:body>
+</html>

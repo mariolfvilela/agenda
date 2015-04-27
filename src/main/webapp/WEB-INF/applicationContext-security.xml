@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/security 
+                        http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+	<http>
+    <intercept-url pattern="/restrito/**" access="ROLE_USUARIO, ROLE_ADMIN, ROLE_CAPTADOR, ROLE_USER" />
+	<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+	<form-login login-page="/publico/login.jsf"
+		always-use-default-target="true" default-target-url="/restrito/principal.jsf"
+		authentication-failure-url="/publico/login.jsf?login_error=1" />
+	<logout />
+	<remember-me />
+</http>
+
+	<authentication-manager>
+		<authentication-provider>
+		<jdbc-user-service data-source-ref="agendaDataSource"
+				users-by-username-query="SELECT fun_loguin as username, fun_senha as password, 'true' as enable FROM Funcionario WHERE fun_loguin = ? and fun_ativo='True'"
+				authorities-by-username-query="SELECT f.fun_loguin as username, p.PERMISSAO as authority FROM Funcionario f, FUNCIONARIO_PERMISSAO p WHERE f.PES_ID = p.FUNCIONARIO and f.fun_loguin = ?" /> 
+
+		</authentication-provider>
+	</authentication-manager>
+	
+</b:beans>

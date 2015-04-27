@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<div class="row">
+	
+		<!-- CEP -->
+		<label class="col-md-1 control-label labelRenovar">CEP</label>
+	
+		<div class="col-md-2 form-group">
+			<div class="input-group">
+				<p:inputMask id="cep" class="form-control" mask="99.999-999"
+					value="#{pessoaBean.endereco.endCep}" size="10" required="true"
+					requiredMessage="O cep não foi preenchido.">
+					<f:validateLength minimum="0" maximum="10" />
+				</p:inputMask>
+	
+				<span class="input-group-btn">
+					<button class="btn btn-default btn-xssssss" type="button"
+						onclick="javascript:getEndereco();">Pesquisar</button>
+				</span>
+			</div>
+		</div>
+	
+	
+		<!-- ENDEREÇO -->
+		<label class="col-md-1 control-label labelRenovar">ENDEREÇO</label>
+	
+		<div class="col-md-4 form-group">
+			<h:inputText id="end" class="form-control input-sm"
+				value="#{pessoaBean.endereco.endLogradouro}" size="35" maxlength="35"
+				required="true" requiredMessage="O Endereço não foi preenchido." />
+		</div>
+	
+	
+		<!-- NÚMERO -->
+		<label class="col-md-1 control-label labelRenovar">Nº</label>
+	
+		<div class="col-md-1  form-group">
+			<pe:inputNumber id="numEnd" required="true"
+				requiredMessage="O Número do Endereço não foi preenchido." size="6"
+				maxlength="6" value="#{pessoaBean.endereco.endNumero}" decimalPlaces="0" converter="javax.faces.Integer"/>
+		</div>
+	
+	
+		<!-- COMPLEMENTO -->
+		<label class="col-md-1 control-label labelRenovar">COMPL.</label>
+	
+		<div class="col-md-2 form-group">
+			<h:inputText id="complemento" class="form-control input-sm"
+				value="#{pessoaBean.endereco.endComplemento}" size="30"
+				maxlength="30">
+				<f:validateLength minimum="0" maximum="60" />
+			</h:inputText>
+		</div>
+	
+	</div>
+	
+	<div class="row">
+	
+		<!-- BAIRRO -->
+		<label class="col-md-1 control-label labelRenovar">BAIRRO</label>
+		
+		<div class="col-md-2 form-group">
+			<h:inputText id="bairro" class="form-control input-sm"
+				value="#{pessoaBean.bairro.baiNome}" size="35"
+				required="true" requiredMessage="O Bairro não foi preenchido." />
+		</div>
+	
+	
+		<!-- CIDADE -->
+		<label class="col-md-1 control-label labelRenovar">CIDADE</label>
+	
+		<div class="col-md-4 form-group">
+			<h:inputText id="Cidade" class="form-control input-sm"
+				value="#{pessoaBean.cidade.cidNome}" size="35"
+				maxlength="35" />
+		</div>
+	
+	
+		<!-- ESTADO -->
+		<label class="col-md-1 control-label labelRenovar">ESTADO</label>
+	
+		<div class="col-md-1 form-group">
+			<h:inputText id="estado" class="form-control input-sm"
+				value="#{pessoaBean.cidade.cidUf}"
+				size="5" />
+		</div>
+	
+	</div>
+
+
+</ui:composition>

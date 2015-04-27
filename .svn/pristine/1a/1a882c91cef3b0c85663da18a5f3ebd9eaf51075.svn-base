@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sec="http://www.springframework.org/security/tags"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition template="/templates/principal.xhtml">
+<ui:define name="corpo">
+
+<style type="text/css">
+.verde {
+	background: lightgreen !important;
+}
+
+.vermelho {
+	background:  #EE9572 !important;
+}
+
+.azul {
+	background: #ADD8E6 !important;
+}
+</style>
+
+	<h:form id="form_login">
+		<h:inputHidden id="acionarLoguinFuncionario" value="#{request.remoteUser}"/>
+		<h:inputHidden id="acionarLoguinFunc" value="#{contextoBean.funcionarioLogado.pessoa.pesNome}"/> 
+	</h:form>
+			<div class="row">
+			<sec:authorize ifAllGranted="ROLE_ADMIN">
+				<div class="col-sm-3">
+					<div class="core-box">
+						<div class="heading">
+							<i class="clip-clip circle-icon circle-teal"> <i
+								class="fa fa-check-circle"></i>
+							</i>
+							<h3>Atualização</h3>
+						</div>
+						<div class="content">Confirmar Atualização</div>
+						<a class="view-more"
+							href="#{request.contextPath}/admin/atualizacao/confirmar.jsf">
+							Detalhes </a>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="core-box">
+						<div class="heading">
+							<i class="clip-clip circle-icon circle-teal"> <i
+								class="fa fa-check-circle"></i>
+							</i>
+							<h3>VISITA</h3>
+						</div>
+						<div class="content">Confirmar visita</div>
+						<a class="view-more"
+							href="#{request.contextPath}/admin/visita/confirmar.jsf">
+							Detalhes </a>
+					</div>
+				</div>
+			</sec:authorize>
+			<div class="col-sm-3">
+				<div class="core-box">
+					<div class="heading">
+						<i class="clip-database circle-icon circle-bricky"> <i
+							class="fa fa-calendar"></i>
+						</i>
+						<h3>Agenda de Atualizações</h3>
+					</div>
+					<div class="content">Agenda de todas atualização</div>
+					<a class="view-more"
+						href="#{request.contextPath}/restrito/atualizacao.jsf">
+						Detalhes </a>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="core-box">
+					<div class="heading">
+						<i class="clip-database circle-icon circle-bricky"> <i class="fa fa-calendar"></i> </i>
+						<h3>Agenda de Visitas</h3>
+					</div>
+					<div class="content">
+						Agenda de todos os clientes
+						</div>
+					<a class="view-more" href="#{request.contextPath}/restrito/visita.jsf">
+						Detalhes
+					</a>
+				</div>
+			</div>
+		</div>
+		<hr />
+	<div class="row">
+			<div class="col-sm-9">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Clientes						
+					</div>
+					<div class="panel-body panel-scroll ps-container" style="height:400px">
+					<h:form id="formulario" class="form-horizontal">
+						<p:dataTable value="#{clienteBean.listaClientes}" var="lis"
+							type="definition" paginator="true" rows="10" style="height:380px"
+							styleClass="table table-striped table-hover" 
+							rowStyleClass="#{lis.cliente.cliSituacao == 'RUIM' ? 'vermelho' : lis.cliente.cliSituacao == 'BOM' ? 'azul' : lis.cliente.cliSituacao == 'ÓTIMO' ? 'verde' : ''}"
+							emptyMessage="Não encontrado">
+
+							<p:column headerText="Situação" styleClass="center"  filterBy="#{lis.cliente.cliSituacao}" filterMatchMode="contains" filterValue="Situação">
+								<h:outputText
+									style="#{clienteBean.style(lis.cliente.cliSituacao)}"
+									value="#{lis.cliente.cliSituacao}" />
+							</p:column>
+							<p:column headerText="Cliente"   filterBy="#{lis.pesNome}" filterMatchMode="contains" filterValue="Cliente">
+								<h:outputText
+									style="#{clienteBean.style(lis.cliente.cliSituacao)}"
+									value="#{lis.pesNome}" />
+							</p:column>
+							<p:column headerText="Versão do Sistema">
+								<h:outputText
+									style="#{clienteBean.style(lis.cliente.cliSituacao)}"
+									value="#{clienteBean.versaoClienteTelaPrincipal(lis.pesId)}" />
+							</p:column>
+							<p:column headerText="Observação" styleClass="hidden-xs">
+								<h:outputText
+									style="#{clienteBean.style(lis.cliente.cliSituacao)}"
+									value="#{clienteBean.historicoCliente(lis.pesId)}" />
+							</p:column>
+
+						</p:dataTable>
+						</h:form>
+						<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -87px; width: 595px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 90px; right: 3px; height: 300px;"><div class="ps-scrollbar-y" style="top: 70px; height: 230px;"></div></div></div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Prospecção de Visitas
+					</div>
+					<div class="panel-body panel-scroll ps-container" style="height:400px">
+						
+						 <p:dataList value="#{clienteBean.listaProspeccao}" var="pros" styleClass="todo" type="definition"
+						 paginator="true" rows="12" style="height:400px;width:272px;"
+						 emptyMessage="Não há Prospecção ">
+						<h:outputText value="#{pros}" escape="false" />
+						</p:dataList>							
+						
+					<div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 3px; width: 413px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px; height: 300px;"><div class="ps-scrollbar-y" style="top: 0px; height: 215px;"></div></div></div>
+				</div>
+			</div>
+		</div>
+	
+</ui:define>
+</ui:composition>
+</html>

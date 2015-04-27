@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formulario" class="form-horizontal">
+
+			<div class="row">
+				<div class="bs-example bs-example-tabs">
+					<ul id="myTab" class="nav nav-tabs">
+						<li class="active"><a>Cadastrar Atendimento</a></li>
+						<li><a href="consulta.jsf">Consultar Atendimentos Por
+								Atendente</a></li>
+						<sec:authorize ifAllGranted="ROLE_ADMIN">
+							<li><a href="consulta-todos.jsf">Consultar Todos os
+									Atendimentos</a></li>
+						</sec:authorize>
+					</ul>
+				</div>
+			</div>
+
+			<p:messages id="cadMenssagem" autoUpdate="true" closable="true"
+				errorClass="bs-callout bs-callout-info" />
+
+			<br />
+
+			<div class="row">
+				<div class="bs-callout bs-callout-info">
+					<h4>Registrar Atendimento</h4>
+				</div>
+				<p:tooltip for="nome"  showEffect="blind" hideEffect="explode"
+					value="Pesquisar o cliente,tecla * traz todas os clientes!" />
+				<label class="control-label">Nome</label>
+				<p:autoComplete id="nome" label="Cliente"
+					required="true" 
+					dropdown="true"
+					requiredMessage="Falta selecionar o cliente !"
+					 size="30"
+					maxlength="30"  effect="fade"
+					completeMethod="#{atendimentoBean.pesquisarCliente}" var="p"
+					itemLabel="#{p.pessoa.pesNome}" itemValue="#{p}" 
+					converter="converteCliente" forceSelection="true">
+					<p:ajax event="itemSelect" 
+						listener="#{atendimentoBean.handleSelect}" update="cliente" />
+					<f:facet name="itemtip">
+						<h:panelGrid columns="1" cellpadding="5" width="300">
+							<f:facet name="header">
+								<p:outputLabel value="#{p.pessoa.pesNome}" style="margin-left:0px; font-size:12px; 
+								COLOR:#{p.cliSituacao == 'RUIM' ? '#FF0000' : p.cliSituacao == 'BOM' ? '#0000FF' : '#008000'}"/>
+							</f:facet>
+							<h:outputText id="cpfPesquisa" value="#{p.pessoa.endereco.endLogradouro}, nº:#{p.pessoa.endereco.endNumero}, #{p.pessoa.endereco.bairro.baiNome}" 
+							style="font-size:10px; margin-left: 0px; padding-left: 0px; line-height: 0px"/>
+						</h:panelGrid>
+					</f:facet>
+				</p:autoComplete>
+			</div>
+
+						<div class="row">
+				<div class="bs-callout bs-callout-info">
+					<h5><p:outputLabel id="cliente" value="#{atendimentoBean.cliente.pesId != '0' ? atendimentoBean.cliente.pessoa.pesNome : 'SELECIONE O CLIENTE'}"/></h5>
+				</div>
+				<p:inputTextarea id="obs" class="autosize form-control"
+					rows="5" cols="100" maxlength="250" counter="counter"
+					counterTemplate="{0} caracteres restantes"
+					required="true" requiredMessage="Descrição obrigatoria"
+					value="#{atendimentoBean.atendimento.ateDescricao}"
+					style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 125px;"/>
+				<div style="text-align: right; padding-top: 20px;">
+					<p:outputLabel id="counter" />
+				</div>
+
+			</div>
+			<div class="row" style="text-align: center">
+				<p:selectOneButton value="#{atendimentoBean.atendimento.ateTipo}"
+					id="tipo" requiredMessage="TIPO DO ATENDIMENTO OBRIGATORIO" required="true" style="word-spacing: 0px; line-height: 0px; fonte-size: 8px;">
+					<f:selectItem itemLabel="ERRO DO CLIENTE"
+						itemValue="ERRO DO CLIENTE"/>
+					<f:selectItem itemLabel="ERRO DO SISTEMA"
+						itemValue="ERRO DO SISTEMA" />
+					<f:selectItem itemLabel="DÚVIDA" itemValue="DUVIDA" />
+					<f:selectItem itemLabel="TREINAMENTO" itemValue="TREINAMENTO" />
+					<f:selectItem itemLabel="AGENDAMENTO DE VISITA"
+						itemValue="AGENDAMENTO DE VISITA" />
+					<f:selectItem itemLabel="INSTAÇÃO" itemValue="INSTAÇÃO" />
+					<f:selectItem itemLabel="ERRO DE CONFIGURAÇÃO"
+						itemValue="ERRO DE CONFIGURAÇÃO" />
+				</p:selectOneButton>
+			</div>
+			
+			<br/>
+
+			<div class="row" style="text-align: center">
+
+				<div class="btn-group">
+					<p:commandButton value="Salvar" action="#{atendimentoBean.salvar()}"
+						class="btn btn-default btn-lg" process="@this, obs,cliente,tipo"/>
+
+					<p:commandButton id="limpar" value="Limpar" type="button"
+						onclick="javascript: window.location.assign('cadastro.jsf');"
+						class="btn btn-default btn-lg" />
+				</div>
+
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+							<br/>
+		<div class="col-xs-12">
+
+			<p:outputPanel id="outPanel" >
+				<p:dataList value="#{atualizacaoBean.listaReleases}"
+					var="rel" type="definition"
+					emptyMessage="Não há informações adicionais cadastradas para esse cliente">
+					<ul class="list-group">
+						<li class="list-group-item active">
+							<p class="list-group-item-text">
+								Codigo:
+								<kbd>#{rel.relId}</kbd>
+								Data:
+								<kbd>
+									<p:outputLabel value="#{rel.relDataCadastro}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</p:outputLabel>
+								</kbd>
+							</p>
+							<h4 class="list-group-item-heading"><span class="label label-info" style="opacity: 1;">#{rel.relNome}</span></h4>
+						</li>
+					</ul>
+				</p:dataList>
+			</p:outputPanel>
+		</div>
+	
+	
+	</ui:composition>

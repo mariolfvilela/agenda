@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formulario" class="form-horizontal">
+			<div class="row">
+				<div class="bs-example bs-example-tabs">
+					<ul id="myTab" class="nav nav-tabs">
+						<li><a href="#{request.contextPath}/restrito/principal.jsf">Página
+								Principal</a></li>
+						<li class="active"><a>Atualização</a></li>
+					</ul>
+				</div>
+			</div>
+			<h3>Confirmar Atualização</h3>
+
+			<p:dataTable id="dataTableAtualizacao" var="at"
+				value="#{atualizacaoBean.listaAtualizacoes}"
+				selection="#{atualizacaoBean.atualizacao}" rowKey="#{at.atuId}"
+				style="margin-bottom:0" emptyMessage="Não há atualização agendada"
+				 scrollable="true" scrollHeight="200">
+				<f:facet name="header">
+            Atualizações
+        </f:facet>
+				<p:column selectionMode="single"
+					style="width:28px;text-align:center" />
+				<p:column headerText="Cliente" filterBy="#{at.cliente.pessoa.pesNome}" filterMatchMode="contains">
+					<h:outputText value="#{at.cliente.pessoa.pesNome}" />
+				</p:column>
+				<p:column headerText="Tipo"  filterBy="#{at.atuTipo}" filterMatchMode="contains">
+					<h:outputText value="#{at.atuTipo}" />
+				</p:column>
+				<p:column headerText="Descrição"  filterBy="#{at.atuDescricao}" filterMatchMode="contains">
+					<h:outputText value="#{at.atuDescricao}" />
+				</p:column>
+				<p:column headerText="Data"  filterBy="#{at.atuDataAgendadaInicio}" filterMatchMode="contains">
+					<h:outputText value="#{at.atuDataAgendadaInicio}">
+						<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+					</h:outputText>
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton process="dataTableAtualizacao" update="@form"
+						icon="ui-icon-contact" value="Registrar" rendered="#{not empty atualizacaoBean.listaAtualizacoes}"
+						oncomplete="PF('atDialog').show()">
+					</p:commandButton>
+				</f:facet>
+			</p:dataTable>
+			
+			
+			<p:dialog id="atDialogId" header="Registrar Atualização"
+				widgetVar="atDialog" modal="true" showEffect="fade"
+				hideEffect="fade" resizable="false" height="280px" width="800px">
+				<p:outputPanel id="panelDial">
+					<div class="col-sm-8" style="text-align: center">
+						<p:treeTable value="#{atualizacaoBean.root}" var="ver" style="width:400px">
+							<f:facet name="header">
+	  Versão do Sistema
+        </f:facet>
+							<p:column headerText="Versão" style="width:350px">
+								<h:outputText value="#{ver.nome}" />
+							</p:column>
+							<p:column style="width:24px" rendered="#{ver.idRelese != 0}">
+								<p:commandLink 
+									title="Registrar" styleClass="ui-icon ui-icon-search"
+									update="@form:panelVersaoCliente,@form:panelVersaoEscolhida" >
+									<f:setPropertyActionListener value="#{ver}"
+										target="#{atualizacaoBean.versaoTempEscolhida}" />
+								</p:commandLink>
+							</p:column>
+						</p:treeTable>
+					</div>
+					<label class="col-md-2 control-label labelRenovar">Versão Cliente</label>
+					<div class="col-sm-4" style="text-align: center">
+						<p:outputPanel id="panelVersaoCliente">
+							<h:outputText value="#{atualizacaoBean.versaoCliente}"
+								escape="false" />
+						</p:outputPanel>
+					</div>
+					<br/>
+					<br/>
+					<label class="col-md-2 control-label labelRenovar">Versão escolhida</label>
+					<div class="col-sm-4" style="text-align: center">
+						<p:outputPanel id="panelVersaoEscolhida" >
+							<h:outputText value="#{atualizacaoBean.versaoEscolhida()}"
+								escape="false" />
+						</p:outputPanel>
+					</div>
+					<div class="row"/><div class="row"/>
+					<div class="row">
+					<hr />
+					</div>
+					<div class="row" style="text-align: center">
+						<div class="btn-group">
+							<p:commandButton id="idSalvar" value="Confirmar Atualização"
+								update="dataTableAtualizacao" process="@this"
+								actionListener="#{atualizacaoBean.confirmarAtualizacao}"
+								class="btn btn-default btn-lg" icon="ui-icon-disk"
+								oncomplete="PF('atDialog').hide()">
+							</p:commandButton>
+						</div>
+					</div>
+				</p:outputPanel>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

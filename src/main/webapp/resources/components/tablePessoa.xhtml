@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+<!--Interface-->
+<composite:interface>
+	<composite:attribute name="width" required="true" />
+	<composite:attribute name="height" required="true" />
+	<composite:attribute name="lista" type="java.util.List" required="true" />
+	<composite:attribute name="larguraDescricao" type="int" required="true" />
+	<composite:attribute name="visivel" type="java.lang.Boolean"
+		default="true" />
+	<composite:attribute name="nomeRodape" default="" />
+	<composite:attribute name="nomeCabecalho" default="" />
+</composite:interface>
+
+<!--Implementação-->
+<composite:implementation>
+	<p:dataTable 
+	scrollable="true" 
+	style="width:#{cc.attrs.width}; height:#{cc.attrs.height}" 
+	value="#{cc.attrs.lista}" 
+	rowIndexVar="index"
+		var="pes"
+		id="id" scrollHeight="350" 
+		 >
+		   <f:facet name="header">
+             #{cc.attrs.nomeCabecalho}
+       </f:facet>
+		<p:column width="90" rendered="#{cc.attrs.visivel}">
+			<p:outputLabel value="Teste"></p:outputLabel>
+		</p:column>
+		<p:column width="95" footerText="contains" filterMatchMode="contains" >
+			<f:facet name="header">Nome</f:facet>
+			<h:outputText
+				style="color: #{pes.pesTipo == 'F' ? 'green' : 'red' }; text-align:right; display:block;"
+				value="#{pes.pesNome}" />
+		</p:column>
+		<p:column id="colunaDescricao" width="#{cc.attrs.larguraDescricao}">
+			<f:facet name="header">Endereço</f:facet>
+			<h:outputText value="#{pes.endereco.endNome}" />
+		</p:column>
+		<p:column width="85">
+			<f:facet name="header">Numero</f:facet>
+			<h:outputText value="#{pes.endereco.endNumero}">
+				<f:convertNumber currencySymbol="R$" type="currency"/>
+			</h:outputText>
+		</p:column>
+		 <f:facet name="footer">  
+            #{cc.attrs.nomeRodape} 
+        </f:facet> 
+	</p:dataTable>
+</composite:implementation>
+</html>

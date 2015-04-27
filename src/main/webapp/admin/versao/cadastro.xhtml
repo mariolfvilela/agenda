@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formulario" class="form-horizontal">
+
+			<div class="row">
+				<div class="bs-example bs-example-tabs">
+					<ul id="myTab" class="nav nav-tabs">
+						<li><a href="consulta.jsf">Consulta de Versões</a></li>
+						<li class="active"><a>Cadastrar Versões</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<p:messages id="cadMenssagem" autoUpdate="true" closable="true"
+				errorClass="bs-callout bs-callout-info" />
+
+			<br />
+
+			<div class="bs-callout bs-callout-info">
+				<p>Versão do Sistema</p>
+			</div>
+
+			<div class="row">
+				<label class="col-md-1 control-label labelRenovar">ID</label>
+				<div class="col-md-2">
+					<div class="form-group">
+
+						<h:inputText id="id" class="form-control input-sm"
+							value="#{atualizacaoBean.versaoSistema.verSisId}" disabled="true" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			<!-- NOME -->
+					<label class="col-md-1 control-label labelRenovar">NOME</label>
+
+					<div class="col-md-5 form-group">
+						<h:inputText id="nomeVersao" class="form-control input-sm"
+							disabled="#{atualizacaoBean.alterar}" value="#{atualizacaoBean.versaoSistema.verSisNome}" size="30"
+							maxlength="145" />
+					</div>
+			</div>
+			
+			<p:outputPanel rendered="#{atualizacaoBean.alterar}">
+			<div class="bs-callout bs-callout-info">
+				<p>Release</p>
+			</div>
+			<ui:include src="/admin/versao/fragments/release.xhtml" />
+			</p:outputPanel>
+			
+			<br/>
+			<div class="row" style="text-align: center">
+				<div class="btn-group">
+					<h:commandButton value="Salvar"
+						action="#{atualizacaoBean.salvar}" rendered="#{!atualizacaoBean.alterar}"
+						 class="btn btn-default btn-lg"
+						process="@this,nomeVersao"/>
+						
+						<h:commandButton value="Incluir Release" rendered="#{atualizacaoBean.alterar}"
+						 class="btn btn-default btn-lg"
+						process="@this,nomeRelease">
+						<p:ajax update="@this,nomeRelease, panelRelease" 
+						process="@this,id,nomeRelease"
+						listener="#{atualizacaoBean.salvarRelease}"/>
+						</h:commandButton>
+				</div>
+			</div>
+			
+			<p:outputPanel id="panelRelease" rendered="#{atualizacaoBean.alterar}">
+			<ui:include src="/admin/versao/fragments/informacoes.xhtml" />
+			</p:outputPanel>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

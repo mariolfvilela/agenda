@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="renovar" match-name="ATENDIMENTO"/>
+  <table-filter match-catalog="renovar" match-name="ATUALIZACAO"/>
+  <table-filter match-catalog="renovar" match-name="BAIRRO"/>
+  <table-filter match-catalog="renovar" match-name="CIDADE"/>
+  <table-filter match-catalog="renovar" match-name="CLIENTE"/>
+  <table-filter match-catalog="renovar" match-name="ENDERECO"/>
+  <table-filter match-catalog="renovar" match-name="E_MAIL"/>
+  <table-filter match-catalog="renovar" match-name="FUNCIONARIO"/>
+  <table-filter match-catalog="renovar" match-name="HISTORICO"/>
+  <table-filter match-catalog="renovar" match-name="PESSOA"/>
+  <table-filter match-catalog="renovar" match-name="PESSOA_FISICA"/>
+  <table-filter match-catalog="renovar" match-name="PESSOA_JURIDICA"/>
+  <table-filter match-catalog="renovar" match-name="RELEASE"/>
+  <table-filter match-catalog="renovar" match-name="TELEFONE"/>
+  <table-filter match-catalog="renovar" match-name="VERSAO_SISTEMA"/>
+  <table-filter match-catalog="renovar" match-name="VISITA"/>
+</hibernate-reverse-engineering>

@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<div class="row">
+			<!-- NOME -->
+					<label class="col-md-1 control-label labelRenovar">RELEASE</label>
+
+					<div class="col-md-5 form-group">
+						<h:inputText id="nomeRelease" class="form-control input-sm"
+							value="#{atualizacaoBean.release.relNome}" size="30"
+							maxlength="145" />
+					</div>
+	</div>
+
+
+</ui:composition>

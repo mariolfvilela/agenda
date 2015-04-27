@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formulario" class="form-horizontal">
+
+			<div class="row">
+				<div class="bs-example bs-example-tabs">
+					<ul id="myTab" class="nav nav-tabs">
+						<li><a href="consulta.jsf?id=#{clienteBean.pessoa.pesId}">Consulta de Cliente</a></li>
+						<li><a href="cadastro.jsf?id=#{clienteBean.pessoa.pesId}">Cadastrar Contato</a></li>
+						<li class="active"><a>Vistoria</a></li>
+						<li><a href="atualizacao.jsf?id=#{clienteBean.pessoa.pesId}">Atualização</a></li>
+					</ul>
+				</div>
+			</div>			
+
+		<script type="text/javascript">  
+        PrimeFaces.locales['pt'] = {  
+                        closeText: 'Fechar',  
+                        prevText: 'Anterior',  
+                        nextText: 'Próximo',  
+                        currentText: 'Começo',  
+                        monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],  
+                        monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Dez'],  
+                        dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],  
+                        dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],  
+                        dayNamesMin: ['D','S','T','Q','Q','S','S'],  
+                        weekHeader: 'Semana',  
+                        firstDay: 1,  
+                        isRTL: false,  
+                        showMonthAfterYear: false,  
+                        yearSuffix: '',  
+                        timeOnlyTitle: 'Só Horas',  
+                        timeText: 'Tempo',  
+                        hourText: 'Hora',  
+                        minuteText: 'Minuto',  
+                        secondText: 'Segundo',  
+                        currentText: 'Data Atual',  
+                        ampm: false,  
+                        month: 'Mês',  
+                        week: 'Semana',  
+                        day: 'Dia',  
+                        allDayText : 'Todo Dia'
+                    };  
+</script>
+		<style type="text/css">
+ .value {
+        width: 1000px;
+    }
+}
+</style>
+
+			<p:messages id="cadMenssagem" autoUpdate="true" closable="true"
+				errorClass="bs-callout bs-callout-info" />
+
+			<br />
+
+			<p:growl id="messages" showDetail="true" />
+			
+<!-- 			axisFormat="H:mm" timeFormat="H:mm" -->
+			<p:schedule id="schedule" value="#{clienteBean.eventModel}"
+				widgetVar="myschedule" locale="pt"  timeZone="America/Sao_Paulo">
+
+				<p:ajax event="dateSelect" listener="#{clienteBean.onDateSelect}"
+					 oncomplete="PF('eventDialog').show()" update="dialogCadastroVisita">
+				</p:ajax>
+
+				<p:ajax event="eventSelect" listener="#{clienteBean.onEventSelect}"
+					 oncomplete="PF('eventDialog').show()" update="dialogCadastroVisita"/>
+
+				<p:ajax event="eventMove" listener="#{clienteBean.onEventMove}"
+					update="messages" />
+					
+				<p:ajax event="eventResize" listener="#{clienteBean.onEventResize}"
+					update="messages" />
+
+			</p:schedule>
+
+			<p:dialog widgetVar="reditar" header="Verificar agenda"
+				showEffect="clip" hideEffect="clip" styleClass="coluna1">
+
+			</p:dialog>
+
+			<p:dialog id="dialogCadastroVisita" widgetVar="eventDialog" header="Cadastrar Visita" modal="true"
+				showEffect="clip" hideEffect="clip" width="650px" height="290px">
+				<div class="row">
+					<label class="col-md-1 control-label labelRenovar">Data Inicio</label>
+					<p:calendar locale="pt_BR" id="data" showButtonPanel="true"
+						pattern="dd/MM/yyyy HH:mm" minHour="00" maxHour="24"
+						value="#{clienteBean.visita.visDataAgendadaInicio}" navigator="true"
+						showOn="button" size="16" maxlength="10" required="true"
+						requiredMessage="Falta o dia da visita">
+						<h:outputScript name="js/calendario_pt_BR.js" library="resources"></h:outputScript>
+					</p:calendar>
+					</div>
+					<div class="row">
+					<label class="col-md-1 control-label labelRenovar">Data Fim</label>
+					<p:calendar locale="pt_BR" id="dataFim" showButtonPanel="true"
+						pattern="dd/MM/yyyy HH:mm" minHour="00" maxHour="24"
+						value="#{clienteBean.visita.visDataAgendadaFim}" navigator="true"
+						showOn="button" size="16" maxlength="10" required="false"
+						requiredMessage="Falta o dia da visita">
+						<h:outputScript name="js/calendario_pt_BR.js" library="resources"></h:outputScript>
+					</p:calendar>
+				</div>
+				<div class="col-xs-11">
+
+					<label class="control-label">Observações para visita</label>
+					<p:inputTextarea class="autosize form-control" id="obsVisita"
+						rows="5" cols="60" maxlength="250" counter="counterEmprestimo"
+						autoResize="false" counterTemplate="{0} caracteres restantes"
+						value="#{clienteBean.visita.visMotivo}" />
+					<h:outputText id="counterEmprestimo" />
+				</div>
+
+
+				<div class="row" style="text-align: center">
+					<div class="btn-group">
+						<p:commandButton id="idSalvar" value="Cadastrar Visita"
+							update="schedule" process="@this,data,obsVisita,dataFim"
+							actionListener="#{clienteBean.salvarVisita}"
+							class="btn btn-default btn-lg"
+							oncomplete="PF('eventDialog').hide()">
+						</p:commandButton>
+					</div>
+				</div>
+
+			</p:dialog>
+
+
+			<p:dialog id="dialog" header="Dados da Visita" styleClass="coluna1"
+				widgetVar="singleCarDialog" resizable="false" showEffect="fade"
+				hideEffect="explode">
+
+
+
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

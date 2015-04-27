@@ -1,0 +1,163 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<div class="row">
+	
+	<h:inputHidden value="#{funcionarioBean.pessoa.pesId}" id="idPessoa" rendered="true" requiredMessage="Selecione o funcionário"/>
+	
+		<!-- NOME -->
+		<label class="col-xs-1 control-label labelRenovar">NOME</label>
+	
+		<div class="col-xs-5">
+			<div class="form-group">
+				<p:inputText id="inqnome" class="form-control input-sm"
+					value="#{funcionarioBean.pessoa.pesNome}" disabled="true" />
+			</div>
+		</div>
+		
+				<h:panelGroup rendered="#{!funcionarioBean.alteracao}">
+
+			<!-- PROCURAR pessoa -->
+			<div class="col-xs-2">
+				<div class="form-group"
+					style="text-align: center; padding-left: 10px;">
+
+					<input type="button" class="btn btn-default btn-sm btn-block"
+						onclick="javascript:openGridInquilinos();" value="Procurar" />
+
+				</div>
+			</div>
+
+		</h:panelGroup>
+
+		<h:panelGroup rendered="#{funcionarioBean.alteracao}">
+
+			<!-- VISUALIZAR PESSOA -->
+			<div class="col-xs-2">
+				<div class="form-group"
+					style="text-align: center; padding-left: 10px;">
+
+					<input type="button" class="btn btn-default btn-sm btn-block"
+						value="Detalhes"
+						onclick="javascript: window.open('#{request.contextPath}/restrito/pessoa/cadastro.jsf?id=#{funcionarioBean.pessoa.pesId}','_blank');" />
+
+				</div>
+			</div>
+
+		</h:panelGroup>
+			
+				</div>
+			
+		<div class="row">
+		
+		<!-- CPF -->
+		<label class="col-xs-1 control-label labelRenovar">CPF</label>
+	
+		
+			<div class="col-xs-2">
+					<div class="form-group">
+				<p:inputMask id="inqcpf" class="form-control input-sm"
+					value="#{funcionarioBean.pessoa.pessoaFisica.pesCpf}" disabled="true" 
+					mask="999.999.999-99" />
+					</div>
+			</div>
+		
+
+	</div>
+	<script type="text/javascript">		
+		$(function () {		
+			// widget configuration
+			var configInquilinos = {
+				layout: {
+					name: 'layout',
+					padding: 0,
+					panels: [
+						{ type: 'main', minSize: 350, overflow: 'hidden' }
+					]
+				},
+				grid: { 
+					name: 'gridInquilinos',
+					style: 'border: 0px; border-left: 1px solid silver',
+					show: {
+						header 		: false,
+						toolbar 	: true,
+						footer		: false,
+						lineNumbers	: false,
+						selectColumn: false,
+						expandColumn: false
+					},
+					columns: [
+						{ field: 'recid', caption: 'Código', size: '60px', sortable: true, resizable: true },
+					    { field: 'nome', caption: 'Nome', size: '280px', sortable: true, resizable: true },
+					    { field: 'cpfcnpj', caption: 'CPF/CNPJ', size: '100px', sortable: true, resizable: true }
+					],
+					searches: [
+						{ type: 'int',  field: 'recid', caption: 'Código' },
+						{ type: 'text',  field: 'nome', caption: 'Nome' },
+						{ type: 'text',  field: 'cpfcnpj', caption: 'CPF/CNPJ' },
+					],
+					records: [
+								
+						<ui:repeat value="#{funcionarioBean.listaPessoasNaoFuncionarios}" var="pessoa">
+							{ 
+								recid: #{pessoa.getPesId()}, 
+								nome: '#{pessoa.getPesNome()}', 
+								cpfcnpj: '#{pessoa.pessoaFisica.pesCpf}',
+							 },
+						</ui:repeat>
+							
+					],
+					onDblClick: function(event) {
+						var id = event.recid;
+	
+						var obj = w2ui['gridInquilinos'].get(id);
+	
+						w2popup.close();
+						
+						if (obj != null) {
+							console.log(w2ui['gridInquilinos'].get(id));
+							document.getElementById('formulario:inqnome').value = obj.nome     + ""; 
+							document.getElementById('formulario:inqcpf').value  = obj.cpfcnpj  + "";
+							document.getElementById('formulario:idPessoa').value  = obj.recid  + "";
+							document.getElementById('formulario:id').value  = obj.recid  + "";
+						}
+					}					
+				}
+			}
+			
+			// initialization in memory
+			$().w2layout(configInquilinos.layout);
+			$().w2grid(configInquilinos.grid);
+		});
+
+		function openGridInquilinos() {
+			w2popup.open({
+				title 	: 'Selecione uma pessoa',
+				width	: 800,
+				height	: 600,
+				showMax : true,
+				body 	: '<div id="main" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px;"></div>',
+				onOpen  : function (event) {
+					event.onComplete = function () {
+						$('#w2ui-popup #main').w2render('layout');
+						w2ui.layout.content('main', w2ui['gridInquilinos']);
+					}
+				},
+				onMax : function (event) { 
+					event.onComplete = function () {
+						w2ui.layout.resize();
+					}
+				},
+				onMin : function (event) {
+					event.onComplete = function () {
+						w2ui.layout.resize();
+					}
+				}		
+			});
+		}		
+	</script>
+		
+</ui:composition>

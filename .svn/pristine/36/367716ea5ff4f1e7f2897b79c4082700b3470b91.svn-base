@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formulario" class="form-horizontal">
+					<div class="row">
+				<div class="bs-example bs-example-tabs">
+					<ul id="myTab" class="nav nav-tabs">
+						<li><a href="#{request.contextPath}/restrito/principal.jsf">Página Principal</a></li>
+						<li class="active"><a>Visitas</a></li>
+					</ul>
+				</div>
+			</div>
+		<h3>Confirmar Visita</h3>
+		
+		<p:dataTable id="dataTableVisitas" var="vis" value="#{clienteBean.listaVisitas}"
+		 selection="#{clienteBean.visita}" rowKey="#{vis.visId}" style="margin-bottom:0"
+		 scrollable="true" scrollHeight="200" emptyMessage="Visita não encontrada">
+        <f:facet name="header">
+            Visistas
+        </f:facet>
+        <p:column selectionMode="single" style="width:28px;text-align:center"/>
+        <p:column headerText="Cliente" filterBy="#{vis.cliente.pessoa.pesNome}" filterMatchMode="contains">
+            <h:outputText value="#{vis.cliente.pessoa.pesNome}" />
+        </p:column>
+        <p:column headerText="Motivo" filterBy="#{vis.visMotivo}" filterMatchMode="contains">
+            <h:outputText value="#{vis.visMotivo}" />
+        </p:column>
+        <p:column headerText="Data" filterBy="#{vis.visDataAgendadaInicio}" filterMatchMode="contains">
+            <h:outputText value="#{vis.visDataAgendadaInicio}" >
+            <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+            </h:outputText>
+        </p:column>
+        <f:facet name="footer">
+            <p:commandButton process="dataTableVisitas"  update="@form" icon="ui-icon-contact"
+             value="Registrar" oncomplete="PF('visDialog').show()" >
+             </p:commandButton>
+        </f:facet>
+    </p:dataTable>
+			<p:dialog id="visDialogId" header="Registrar Visita"
+				widgetVar="visDialog" modal="true" showEffect="fade"
+				hideEffect="fade" resizable="false">
+				<p:outputPanel id="panel">
+				<div class="col-xs-11">					
+						<label class="control-label">Resultado da visita</label>
+						<p:inputTextarea class="autosize form-control" id="obsVisita"
+							rows="5" cols="60" maxlength="250" counter="counterEmprestimo"
+							autoResize="false" counterTemplate="{0} caracteres restantes"
+							value="#{clienteBean.visita.visPosVisita}" />
+						<h:outputText id="counterEmprestimo" />
+				</div>
+
+
+				<div class="row" style="text-align: center">
+					<div class="btn-group">
+						<p:commandButton id="idSalvar" value="Cadastrar Visita"
+							update="dataTableVisitas" process="@this,obsVisita"
+							actionListener="#{clienteBean.registrarVisita}"
+							class="btn btn-default btn-lg" icon="ui-icon-disk"
+							oncomplete="PF('visDialog').hide()">
+						</p:commandButton>
+					</div>
+				</div>
+				</p:outputPanel>
+			</p:dialog>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

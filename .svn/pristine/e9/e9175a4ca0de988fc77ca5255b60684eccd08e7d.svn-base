@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context reloadable="true">
+
+<Resource name="jdbc/agendaDB" 
+	auth="Container"
+	type="javax.sql.DataSource"
+	maxActive="100"
+	maxIdle="30"
+	maxWait="10000"
+	username="sa"
+	password="RENOVAR@2013"
+	driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+	url="jdbc:sqlserver://servidor:1433;databaseName=renovar;autoReconnect=true;autoReconnectForPools=true"/>
+</Context>

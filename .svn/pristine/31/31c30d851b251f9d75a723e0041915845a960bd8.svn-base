@@ -1,0 +1,60 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<div class="row">
+		<div class="col-sm-6">		
+	<p:treeTable value="#{clienteBean.root}" var="ver" emptyMessage="Não há versão cadastrada no sistema">
+		<f:facet name="header">
+	  Versão do Sistema
+        </f:facet>
+		<p:column headerText="Versão">
+			<h:outputText value="#{ver.nome}" />
+		</p:column>
+		<p:column style="width:24px" rendered="#{ver.idRelese != 0}">
+			<p:commandLink oncomplete="PF('documentDialog').show()"
+				title="Registrar" styleClass="ui-icon ui-icon-search" update="@form">
+				<f:setPropertyActionListener value="#{ver}"
+					target="#{clienteBean.versaoTemp}" />
+			</p:commandLink>
+		</p:column>
+	</p:treeTable>	
+	</div>
+		<div class="col-sm-6" style="text-align: center">
+			<p:outputPanel id="panelVersao">
+				<h:outputText value="#{clienteBean.versaoCliente}" escape="false" />
+			</p:outputPanel>
+		</div>
+	</div>
+
+	<p:dialog id="dialog" header="Registrar" showEffect="fade"
+		widgetVar="documentDialog" modal="true" resizable="false" width="500px" height="100px">
+		<p:outputPanel id="panel">
+		<div class="row" style="text-align: center">
+			<label class="col-md-2 control-label labelRenovar">Release</label>
+				<div class="col-md-4">
+					<div class="form-group">						
+					<h:inputText class="form-control input-sm"
+							value="#{clienteBean.versaoTemp.nome}" disabled="true" />
+					</div>
+				</div>					
+			
+			</div>
+			
+			<div class="row" style="text-align: center">
+					<div class="btn-group">
+						<p:commandButton id="idSalvarVersao" value="Registrar Versão"
+							update="@this,panelVersao,outPanel" process="@this,id"
+							actionListener="#{clienteBean.registrarVersao}"
+							class="btn btn-default btn-lg" icon="ui-icon-disk"
+							oncomplete="PF('documentDialog').hide()">
+						</p:commandButton>
+					</div>
+				</div>
+		</p:outputPanel>
+
+	</p:dialog>
+
+</ui:composition>

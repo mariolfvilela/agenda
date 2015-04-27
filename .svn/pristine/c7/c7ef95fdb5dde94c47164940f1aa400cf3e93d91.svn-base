@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/templates/principal.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formulario" class="form-horizontal">
+
+			<div class="row">
+				<div class="bs-example bs-example-tabs">
+					<ul id="myTab" class="nav nav-tabs">
+						<li><a href="consulta.jsf">Consulta de Cliente</a></li>
+						<li class="active"><a>Cadastrar Contato</a></li>
+						<li><a href="vistoria.jsf?id=#{clienteBean.pessoa.pesId}">Visita</a></li>
+					</ul>
+				</div>
+			</div>
+
+			<p:messages id="cadMenssagem" autoUpdate="true" closable="true"
+				errorClass="bs-callout bs-callout-info" />
+
+			<br />
+
+			<div class="bs-callout bs-callout-info">
+				<p>Dados Pessoais</p>
+			</div>
+
+			<div class="row">
+
+				<label class="col-md-1 control-label labelRenovar">ID</label>
+
+				<div class="col-md-2">
+					<div class="form-group">
+
+						<h:inputText id="id" class="form-control input-sm"
+							value="#{clienteBean.pessoa.pesId}" disabled="true" />
+
+					</div>
+				</div>
+
+			</div>
+			<p:outputPanel id="panelPessoa">
+				<div class="row">
+
+					<!-- TIPO -->
+					<label class="col-md-1 control-label labelRenovar">TIPO</label>
+					<p:focus for="selectorTipoPessoa"></p:focus>
+					<div class="col-md-2 form-group">
+						<h:selectOneMenu id="selectorTipoPessoa" disabled="true"
+							class="form-control input-sm" value="#{clienteBean.tipoPessoa}">
+							<f:selectItem itemValue="F" itemLabel="Pessoa Física" />
+							<f:selectItem itemValue="J" itemLabel="Pessoa Jurídica" />
+							<f:converter converterId="javax.faces.Character" />
+						</h:selectOneMenu>
+					</div>
+
+
+					<!-- NOME -->
+					<label class="col-md-1 control-label labelRenovar">NOME</label>
+
+					<div class="col-md-5 form-group">
+						<h:inputText id="nomepessoa" class="form-control input-sm"
+							disabled="true" value="#{clienteBean.pessoa.pesNome}" size="30"
+							maxlength="145" />
+					</div>
+
+
+				</div>
+
+				<p:outputPanel id="panelPessoaFisica"
+					rendered="#{clienteBean.tipoPessoa == 'F'}">
+					<div class="row">
+						<!-- CPF -->
+						<label class="col-md-1 control-label labelRenovar">CPF</label>
+
+						<div class="col-md-2 form-group">
+							<p:inputMask id="cpf" class="form-control input-sm"
+								disabled="true"
+								value="#{clienteBean.pessoa.pessoaFisica.pesCpf}" size="14"
+								requiredMessage="Cpf não preenchido" mask="999.999.999-99">
+							</p:inputMask>
+						</div>
+
+
+						<!-- RG -->
+						<label class="col-md-1 control-label labelRenovar">RG</label>
+
+						<div class="col-md-2 form-group">
+							<h:inputText id="rg" class="form-control input-sm"
+								disabled="true"
+								value="#{clienteBean.pessoa.pessoaFisica.pesIdentidade}"
+								size="14" requiredMessage="Falta o RG da Pessoa !"
+								maxlength="14" />
+						</div>
+
+					</div>
+				</p:outputPanel>
+
+				<p:outputPanel id="panelPessoaJuridica"
+					rendered="#{clienteBean.tipoPessoa == 'J'}">
+					<div class="row">
+						<!-- CNPJ -->
+						<label class="col-md-1 control-label labelRenovar">CNPJ</label>
+
+						<div class="col-md-2 form-group">
+							<p:inputMask id="cnpj" class="form-control input-sm"
+								disabled="true"
+								value="#{clienteBean.pessoa.pessoaJuridica.pesCnpj}" size="14"
+								requiredMessage="Cnpj inválido." mask="99.999.999/9999-99">
+							</p:inputMask>
+						</div>
+						<!-- NOME FANTASIA-->
+						<label class="col-md-1 control-label labelRenovar">NOME
+							FANTASIA</label>
+
+						<div class="col-md-5 form-group">
+							<h:inputText id="nomepessoaJuridica"
+								class="form-control input-sm"
+								requiredMessage="Falta o nome da Pessoa !" required="true"
+								disabled="true"
+								value="#{clienteBean.pessoa.pessoaJuridica.pesNomeFantasia}"
+								size="30" maxlength="145" />
+						</div>
+
+					</div>
+				</p:outputPanel>
+			</p:outputPanel>
+
+
+			<div class="bs-callout bs-callout-info">
+				<p>Endereço</p>
+			</div>
+
+			<ui:include src="/restrito/cliente/fragments/endereco.xhtml" />
+
+			<div class="bs-callout bs-callout-info">
+				<p>Descrição do Cliente</p>
+			</div>
+
+			<ui:include src="/restrito/cliente/fragments/descricao.xhtml" />
+
+			<div class="row" style="text-align: center">
+				<p:selectOneButton value="#{clienteBean.cliente.cliSituacao}" id="situacao">
+					<f:selectItem itemLabel="RUIM" itemValue="RUIM" />
+					<f:selectItem itemLabel="BOM" itemValue="BOM" />
+					<f:selectItem itemLabel="ÓTIMO" itemValue="ÓTIMO" />
+				</p:selectOneButton>
+			</div>
+			<br/>
+			<div class="row" style="text-align: center">
+				<div class="btn-group">
+					<h:commandButton value="Salvar"
+						actionListener="#{clienteBean.salvarInformacoes()}"
+						update="outPanel" class="btn btn-default btn-lg"
+						process="infAdicionais">
+						<f:ajax execute="infAdicionais situacao" render="infAdicionais outPanel" />
+					</h:commandButton>
+				</div>
+			</div>
+
+			<ui:include src="/restrito/cliente/fragments/informacoes.xhtml" />
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
